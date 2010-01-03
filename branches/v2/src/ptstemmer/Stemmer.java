@@ -19,11 +19,13 @@
 package ptstemmer;
 
 
+import java.util.Collection;
+import java.util.HashSet;
+
+import ptstemmer.exceptions.PTStemmerException;
 import ptstemmer.implementations.OrengoStemmer;
 import ptstemmer.implementations.PorterStemmer;
 import ptstemmer.support.datastructures.LRUCache;
-import ptstemmer.support.namedentities.NamedEntitiesList;
-import ptstemmer.support.stopwords.StopWordList;
 
 /**
  * Abstract class that provides the main features to all the stemmers
@@ -35,11 +37,7 @@ public abstract class Stemmer {
 	private boolean cacheStems;
 	private LRUCache lruCache;
 
-	private boolean ignoreNamedEntities;
-	private NamedEntitiesList namedEntities;
-
-	private boolean ignoreStopWords;
-	private StopWordList stopWords;
+	private HashSet<String> toIgnore = new HashSet<String>();
 
 	public enum StemmerType{ORENGO, PORTER};
 
@@ -47,13 +45,14 @@ public abstract class Stemmer {
 	 * Factory to stemmer construction
 	 * @param stype
 	 * @return
+	 * @throws PTStemmerException 
 	 */
-	public static Stemmer StemmerFactory(StemmerType stype)
+	public static Stemmer StemmerFactory(StemmerType stype) throws PTStemmerException
 	{
-		if(stype == StemmerType.ORENGO)
-			return new OrengoStemmer();
-		else
+		if(stype == StemmerType.PORTER)
 			return new PorterStemmer();
+		else
+			return new OrengoStemmer();
 	}
 
 	/**
@@ -84,60 +83,20 @@ public abstract class Stemmer {
 		return cacheStems;
 	}
 
-	/**
-	 * Ignore all the named entities present in <code>list</code>
-	 * @param list
-	 */
-	public void ignoreNamedEntities(NamedEntitiesList list)
+	public void ignore(String... words)
 	{
-		ignoreNamedEntities = true;
-		namedEntities = list;
+		for(String word: words)
+			toIgnore.add(word);
 	}
 
-	/**
-	 * Disable named entity recognition
-	 */
-	public void allowNamedEntities()
+	public void ignore(Collection<String> words)
 	{
-		ignoreNamedEntities = false;
-		namedEntities = null;
+		toIgnore.addAll(words);
 	}
 
-	/**
-	 * Check if named entity recognition is enabled
-	 * @return
-	 */
-	public boolean isNamedEntitiesIgnored()
+	public void clearIgnoreList()
 	{
-		return ignoreNamedEntities;
-	}
-
-	/**
-	 * Ignore all the stopwords present in <code>list</code>
-	 * @param list
-	 */
-	public void ignoreStopWords(StopWordList list)
-	{
-		ignoreStopWords = true;
-		stopWords = list;
-	}
-
-	/**
-	 * Disable stopword recognition
-	 */
-	public void allowStopWords()
-	{
-		ignoreStopWords = false;
-		stopWords = null;
-	}
-
-	/**
-	 * Check if stopword recognition is enabled
-	 * @return
-	 */
-	public boolean isStopWordsIgnored()
-	{
-		return ignoreStopWords;
+		toIgnore.clear();
 	}
 
 	/**
@@ -149,7 +108,7 @@ public abstract class Stemmer {
 	{
 		String[] res = phrase.split(" ");
 		for(int i=0; i<res.length; i++)
-			res[i] = wordStemming(res[i]);
+			res[i] = stem(res[i]);
 		return res;
 	}
 
@@ -158,33 +117,23 @@ public abstract class Stemmer {
 	 * @param word
 	 * @return
 	 */
-	public String wordStemming(String word)
+	public String stem(String word)
 	{
 		String res;
-		if(word.contains(" "))
+		word = word.trim().toLowerCase();
+
+		if(cacheStems)
+			if(lruCache.containsKey(word))
+				return lruCache.get(word);
+
+		if(toIgnore.contains(word))
 			return word;
-		else
-		{
-			word = word.trim().toLowerCase();
-			
-			if(cacheStems)
-				if(lruCache.containsKey(word))
-					return lruCache.get(word);
+		
+		res = stemming(word);
 
-			if(ignoreNamedEntities)
-				if(namedEntities.isNamedEntity(word))
-					return word;
-
-			if(ignoreStopWords)
-				if(stopWords.isStopWord(word))
-					return word;
-
-			res = stemming(word);
-
-			if(cacheStems)
-				lruCache.put(word, res);
-			return res;
-		}
+		if(cacheStems)
+			lruCache.put(word, res);
+		return res;
 	}
 
 	protected abstract String stemming(String word);

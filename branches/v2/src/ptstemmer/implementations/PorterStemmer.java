@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import ptstemmer.Stemmer;
+import ptstemmer.support.datastructures.SuffixTree;
 
 
 /**
@@ -56,7 +57,7 @@ public class PorterStemmer extends Stemmer{
 			r2 = findR(r1);
 			rv = findRV(stem);
 		}
-		
+
 		if(stem.compareTo(st)!=0)
 		{
 			r1 = findR(stem);
@@ -82,84 +83,73 @@ public class PorterStemmer extends Stemmer{
 	}
 	
 	private String step1(String st, String r1, String r2, String rv)
-	{
-		int i;
+	{	
+		if(!(suffix = suffix1.getLongestSuffix(r2)).isEmpty())	//Rule 1
+			return st.substring(0, st.length()-suffix.length());
 		
-		for(i = 0; i<suffix1.length; i++)	//Rule 1
-			if(r2.endsWith(suffix1[i]))
-				return st.substring(0, st.length()-suffix1[i].length());
+		if(!(suffix = suffix2.getLongestSuffix(r2)).isEmpty())	//Rule 2
+			return st.substring(0, st.length()-suffix.length())+"log";
 		
-		for(i = 0; i<suffix2.length; i++)	//Rule 2
-			if(r2.endsWith(suffix2[i]))
-				return st.substring(0, st.length()-suffix2[i].length())+"log";
+		if(!(suffix = suffix3.getLongestSuffix(r2)).isEmpty())	//Rule 3
+			return st.substring(0, st.length()-suffix.length())+"u";
 		
-		for(i = 0; i<suffix3.length; i++)	//Rule 3
-			if(r2.endsWith(suffix3[i]))
-				return st.substring(0, st.length()-suffix3[i].length())+"u";
+		if(!(suffix = suffix4.getLongestSuffix(r2)).isEmpty())	//Rule 4
+			return st.substring(0, st.length()-suffix.length())+"ente";
 		
-		for(i = 0; i<suffix4.length; i++)	//Rule 4
-			if(r2.endsWith(suffix4[i]))
-				return st.substring(0, st.length()-suffix4[i].length())+"ente";
-		
-		for(i = 0; i<suffix5.length; i++)	//Rule 5
-			if(r1.endsWith(suffix5[i]))
+		if(!(suffix = suffix5.getLongestSuffix(r1)).isEmpty())	//Rule 5
 			{
-				st = st.substring(0, st.length()-suffix5[i].length());
-				if(st.endsWith("iv") && r2.endsWith("iv"+suffix5[i]))
+				st = st.substring(0, st.length()-suffix.length());
+				if(st.endsWith("iv") && r2.endsWith("iv"+suffix))
 				{
 					st = st.substring(0,st.length()-2);
-					if(st.endsWith("at")&& r2.endsWith("ativ"+suffix5[i]))
+					if(st.endsWith("at")&& r2.endsWith("ativ"+suffix))
 						st = st.substring(0,st.length()-2);
 				}
-				else if(st.endsWith("os") && r2.endsWith("os"+suffix5[i]))
+				else if(st.endsWith("os") && r2.endsWith("os"+suffix))
 					st = st.substring(0,st.length()-2);
-				else if(st.endsWith("ic") && r2.endsWith("ic"+suffix5[i]))
+				else if(st.endsWith("ic") && r2.endsWith("ic"+suffix))
 					st = st.substring(0,st.length()-2);
-				else if(st.endsWith("ad") && r2.endsWith("ad"+suffix5[i]))
-					st = st.substring(0,st.length()-2);
-				return st;
-			}
-		
-		for(i = 0; i<suffix6.length; i++)	//Rule 6
-			if(r2.endsWith(suffix6[i]))
-			{
-				st = st.substring(0, st.length()-suffix6[i].length());
-				if(st.endsWith("ante") && r2.endsWith("ante"+suffix6[i]))
-					st = st.substring(0,st.length()-4);
-				else if(st.endsWith("avel") && r2.endsWith("avel"+suffix6[i]))
-					st = st.substring(0,st.length()-4);
-				else if(st.endsWith("ível") && r2.endsWith("ível"+suffix6[i]))
-					st = st.substring(0,st.length()-4);
-				return st;
-			}
-		
-		for(i = 0; i<suffix7.length; i++)	//Rule 7
-			if(r2.endsWith(suffix7[i]))
-			{
-				st = st.substring(0, st.length()-suffix7[i].length());
-				if(st.endsWith("abil") && r2.endsWith("abil"+suffix7[i]))
-					st = st.substring(0,st.length()-4);
-				else if(st.endsWith("ic") && r2.endsWith("ic"+suffix7[i]))
-					st = st.substring(0,st.length()-2);
-				else if(st.endsWith("iv") && r2.endsWith("iv"+suffix7[i]))
+				else if(st.endsWith("ad") && r2.endsWith("ad"+suffix))
 					st = st.substring(0,st.length()-2);
 				return st;
 			}
 		
-		for(i = 0; i<suffix8.length; i++)	//Rule 8
-			if(r2.endsWith(suffix8[i]))
+		if(!(suffix = suffix6.getLongestSuffix(r2)).isEmpty())	//Rule 6
 			{
-				st = st.substring(0, st.length()-suffix8[i].length());
-				if(st.endsWith("at") && r2.endsWith("at"+suffix8[i]))
+				st = st.substring(0, st.length()-suffix.length());
+				if(st.endsWith("ante") && r2.endsWith("ante"+suffix))
+					st = st.substring(0,st.length()-4);
+				else if(st.endsWith("avel") && r2.endsWith("avel"+suffix))
+					st = st.substring(0,st.length()-4);
+				else if(st.endsWith("ível") && r2.endsWith("ível"+suffix))
+					st = st.substring(0,st.length()-4);
+				return st;
+			}
+		
+		if(!(suffix = suffix7.getLongestSuffix(r2)).isEmpty())	//Rule 7
+			{
+				st = st.substring(0, st.length()-suffix.length());
+				if(st.endsWith("abil") && r2.endsWith("abil"+suffix))
+					st = st.substring(0,st.length()-4);
+				else if(st.endsWith("ic") && r2.endsWith("ic"+suffix))
+					st = st.substring(0,st.length()-2);
+				else if(st.endsWith("iv") && r2.endsWith("iv"+suffix))
 					st = st.substring(0,st.length()-2);
 				return st;
 			}
 		
-		for(i = 0; i<suffix9.length; i++)	//Rule 9
-			if(rv.endsWith(suffix9[i]))
+		if(!(suffix = suffix8.getLongestSuffix(r2)).isEmpty())	//Rule 8
 			{
-				if(st.endsWith("e"+suffix9[i]))
-					st = st.substring(0,st.length()-suffix9[i].length())+"ir";
+				st = st.substring(0, st.length()-suffix.length());
+				if(st.endsWith("at") && r2.endsWith("at"+suffix))
+					st = st.substring(0,st.length()-2);
+				return st;
+			}
+		
+		if(!(suffix = suffix9.getLongestSuffix(rv)).isEmpty())	//Rule 9
+			{
+				if(st.endsWith("e"+suffix))
+					st = st.substring(0,st.length()-suffix.length())+"ir";
 				return st;
 			}	
 		return st;
@@ -167,9 +157,8 @@ public class PorterStemmer extends Stemmer{
 	
 	private String step2(String st, String r1, String r2, String rv)
 	{
-		for(int i = 0; i<suffixv.length; i++)	//Rule 1
-			if(rv.endsWith(suffixv[i]))
-				return st.substring(0, st.length()-suffixv[i].length());
+		if(!(suffix = suffixv.getLongestSuffix(rv)).isEmpty())	//Rule 1
+			return st.substring(0, st.length()-suffix.length());
 		return st;
 	}
 	
@@ -183,21 +172,19 @@ public class PorterStemmer extends Stemmer{
 	
 	private String step4(String st, String r1, String r2, String rv)
 	{
-		for(int i = 0; i<suffixr.length; i++)	//Rule 1
-			if(rv.endsWith(suffixr[i]))
-				return st.substring(0,st.length()-suffixr[i].length());
+		if(!(suffix = suffixr.getLongestSuffix(rv)).isEmpty())	//Rule 1
+				return st.substring(0,st.length()-suffix.length());
 		return st;
 	}
 	
 	private String step5(String st, String r1, String r2, String rv)
 	{
-		for(int i = 0; i<suffixf.length; i++)	//Rule 1
-			if(rv.endsWith(suffixf[i]))
+		if(!(suffix = suffixf.getLongestSuffix(rv)).isEmpty())	//Rule 1
 			{
-				st = st.substring(0,st.length()-suffixf[i].length());
-				if(st.endsWith("gu") && rv.endsWith("u"+suffixf[i]))
+				st = st.substring(0,st.length()-suffix.length());
+				if(st.endsWith("gu") && rv.endsWith("u"+suffix))
 					st = st.substring(0,st.length()-1);
-				else if(st.endsWith("ci") && rv.endsWith("i"+suffixf[i]))
+				else if(st.endsWith("ci") && rv.endsWith("i"+suffix))
 					st = st.substring(0,st.length()-1);
 				return st;
 			}
@@ -253,19 +240,20 @@ public class PorterStemmer extends Stemmer{
 		return st;
 	}
 	
-	private final HashSet<Character> vowels = new HashSet<Character>(Arrays.asList('a', 'e', 'i', 'o', 'u', 'á', 'é', 'í', 'ó', 'ú', 'â', 'ê', 'ô'));
+	private String suffix;	//auxiliary variable
 	
-	private final String suffix1[] = {"amentos", "imentos", "amento", "imento", "adoras", "adores", "aço~es", "ismos", "istas", "adora", "aça~o", "antes", "ância", "ezas", "icos", "icas", "ismo", "ável", "ível", "ista", "osos", "osas", "ador", "ante", "eza", "ico", "ica", "oso", "osa"};
-	private final String suffix2[] ={"logías", "logía"};
-	private final String suffix3[] ={"uciones", "ución"};
-	private final String suffix4[] ={"ências", "ência"};
-	private final String suffix5[] ={"amente"};
-	private final String suffix6[] ={"mente"};
-	private final String suffix7[] ={"idades", "idade"};	
-	private final String suffix8[] ={"ivas", "ivos", "iva", "ivo"};
-	private final String suffix9[] ={"iras", "ira"};			
-	private final String suffixv[] = {"aríamos", "eríamos", "iríamos", "ássemos", "êssemos", "íssemos", "aríeis", "eríeis", "iríeis", "ásseis", "ésseis", "ísseis", "áramos", "éramos", "íramos", "ávamos", "aremos", "eremos", "iremos", "ariam", "eriam", "iriam", "assem", "essem", "issem", "ara~o", "era~o", "ira~o", "arias", "erias", "irias", "ardes", "erdes", "irdes", "asses", "esses", "isses", "astes", "estes", "istes", "áreis", "areis", "éreis", "ereis", "íreis", "ireis", "áveis", "íamos", "armos", "ermos", "irmos", "aria", "eria", "iria", "asse", "esse", "isse", "aste", "este", "iste", "arei", "erei", "irei", "aram", "eram", "iram", "avam", "arem", "erem", "irem", "ando", "endo", "indo", "adas", "idas", "arás", "aras", "erás", "eras", "irás", "avas", "ares", "eres", "ires", "íeis", "ados", "idos", "ámos", "amos", "emos", "imos", "iras", "ada", "ida", "ará", "ara", "erá", "era", "irá", "ava", "iam", "ado", "ido", "ias", "ais", "eis", "ira", "ia", "ei", "am", "em", "ar", "er", "ir", "as", "es", "is", "eu", "iu", "ou"};	
-	private final String suffixr[] = {"os", "a", "i", "o", "á", "í", "ó"};
-	private final String suffixf[] = {"e", "é", "ê"};
-
+	private final static HashSet<Character> vowels = new HashSet<Character>(Arrays.asList('a', 'e', 'i', 'o', 'u', 'á', 'é', 'í', 'ó', 'ú', 'â', 'ê', 'ô'));	
+	
+	private final static SuffixTree<Boolean> suffix1 = new SuffixTree<Boolean>(true,"amentos", "imentos", "amento", "imento", "adoras", "adores", "aço~es", "ismos", "istas", "adora", "aça~o", "antes", "ância", "ezas", "icos", "icas", "ismo", "ável", "ível", "ista", "osos", "osas", "ador", "ante", "eza", "ico", "ica", "oso", "osa");
+	private final static SuffixTree<Boolean> suffix2 = new SuffixTree<Boolean>(true,"logías", "logía");
+	private final static SuffixTree<Boolean> suffix3 = new SuffixTree<Boolean>(true,"uciones", "ución");
+	private final static SuffixTree<Boolean> suffix4 = new SuffixTree<Boolean>(true,"ências", "ência");
+	private final static SuffixTree<Boolean> suffix5 = new SuffixTree<Boolean>(true,"amente");
+	private final static SuffixTree<Boolean> suffix6 = new SuffixTree<Boolean>(true,"mente");
+	private final static SuffixTree<Boolean> suffix7 = new SuffixTree<Boolean>(true,"idades", "idade");
+	private final static SuffixTree<Boolean> suffix8 = new SuffixTree<Boolean>(true,"ivas", "ivos", "iva", "ivo");
+	private final static SuffixTree<Boolean> suffix9 = new SuffixTree<Boolean>(true,"iras", "ira");
+	private final static SuffixTree<Boolean> suffixv = new SuffixTree<Boolean>(true,"aríamos", "eríamos", "iríamos", "ássemos", "êssemos", "íssemos", "aríeis", "eríeis", "iríeis", "ásseis", "ésseis", "ísseis", "áramos", "éramos", "íramos", "ávamos", "aremos", "eremos", "iremos", "ariam", "eriam", "iriam", "assem", "essem", "issem", "ara~o", "era~o", "ira~o", "arias", "erias", "irias", "ardes", "erdes", "irdes", "asses", "esses", "isses", "astes", "estes", "istes", "áreis", "areis", "éreis", "ereis", "íreis", "ireis", "áveis", "íamos", "armos", "ermos", "irmos", "aria", "eria", "iria", "asse", "esse", "isse", "aste", "este", "iste", "arei", "erei", "irei", "aram", "eram", "iram", "avam", "arem", "erem", "irem", "ando", "endo", "indo", "adas", "idas", "arás", "aras", "erás", "eras", "irás", "avas", "ares", "eres", "ires", "íeis", "ados", "idos", "ámos", "amos", "emos", "imos", "iras", "ada", "ida", "ará", "ara", "erá", "era", "irá", "ava", "iam", "ado", "ido", "ias", "ais", "eis", "ira", "ia", "ei", "am", "em", "ar", "er", "ir", "as", "es", "is", "eu", "iu", "ou");
+	private final static SuffixTree<Boolean> suffixr = new SuffixTree<Boolean>(true,"os", "a", "i", "o", "á", "í", "ó");
+	private final static SuffixTree<Boolean> suffixf = new SuffixTree<Boolean>(true,"e", "é", "ê");
 }

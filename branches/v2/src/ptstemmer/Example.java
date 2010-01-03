@@ -1,5 +1,5 @@
 /**
- * PTStemmer - Java Stemming toolkit for the Portuguese language (C) 2008 Pedro Oliveira
+ * PTStemmer - Java Stemming toolkit for the Portuguese language (C) 2008-2010 Pedro Oliveira
  * 
  * This file is part of PTStemmer.
  * PTStemmer is free software: you can redistribute it and/or modify
@@ -20,6 +20,8 @@ package ptstemmer;
 
 import java.util.Scanner;
 
+import ptstemmer.exceptions.PTStemmerException;
+
 
 /**
  * System demonstration
@@ -28,12 +30,12 @@ import java.util.Scanner;
  */
 public class Example {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws PTStemmerException {
 		Example ex = new Example();
 		ex.starter();
 	}
 	
-	public void starter()
+	public void starter() throws PTStemmerException
 	{
 		Stemmer st = Stemmer.StemmerFactory(Stemmer.StemmerType.ORENGO);
 		st.enableCaching(1000);
@@ -44,7 +46,7 @@ public class Example {
 		while(s.hasNext())
 		{
 			line = s.nextLine();
-			System.out.println("Stem: "+st.wordStemming(line));
+			System.out.println("Stem: "+st.stem(line));
 		}	
 	}
 }
