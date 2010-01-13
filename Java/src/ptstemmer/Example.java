@@ -1,5 +1,5 @@
 /**
- * PTStemmer - Java Stemming toolkit for the Portuguese language (C) 2008 Pedro Oliveira
+ * PTStemmer - A Stemming toolkit for the Portuguese language (C) 2008-2010 Pedro Oliveira
  * 
  * This file is part of PTStemmer.
  * PTStemmer is free software: you can redistribute it and/or modify
@@ -16,29 +16,37 @@
  * along with PTStemmer. If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package ptstemmer.support.namedentities;
+package ptstemmer;
 
-import java.util.HashSet;
+import java.util.Scanner;
 
-import ptstemmer.support.ReadFileToHashSet;
+import ptstemmer.exceptions.PTStemmerException;
+
 
 /**
- * Read the named entity list from a file (one entity per line)
+ * System demo
  * @author Pedro Oliveira
  *
  */
-public class NamedEntitiesFromFile implements NamedEntitiesList {
+public class Example {
 
-	private HashSet<String> res;
+	public static void main(String[] args) throws PTStemmerException {
+		Example ex = new Example();
+		ex.starter();
+	}
 	
-	public NamedEntitiesFromFile(String file)
+	public void starter() throws PTStemmerException
 	{
-		res = ReadFileToHashSet.getInstance().fileToHash(file);
+		Stemmer st = Stemmer.StemmerFactory(Stemmer.StemmerType.ORENGO);
+		st.enableCaching(1000);
+		
+		String line;
+		Scanner s = new Scanner(System.in);
+		System.out.println("Insert one word per line:");
+		while(s.hasNext())
+		{
+			line = s.nextLine();
+			System.out.println("Stem: "+st.getWordStem(line));
+		}	
 	}
-	
-	//@Override
-	public boolean isNamedEntity(String word) {
-		return res.contains(word);
-	}
-
 }

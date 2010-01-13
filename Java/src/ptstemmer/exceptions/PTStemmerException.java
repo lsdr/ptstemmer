@@ -1,5 +1,5 @@
 /**
- * PTStemmer - Java Stemming toolkit for the Portuguese language (C) 2008 Pedro Oliveira
+ * PTStemmer - A Stemming toolkit for the Portuguese language (C) 2008-2010 Pedro Oliveira
  * 
  * This file is part of PTStemmer.
  * PTStemmer is free software: you can redistribute it and/or modify
@@ -16,29 +16,18 @@
  * along with PTStemmer. If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package ptstemmer.support.stopwords;
+package ptstemmer.exceptions;
 
-import java.util.HashSet;
+public class PTStemmerException extends Exception {
+	private static final long serialVersionUID = -8308726135393629156L;
 
-import ptstemmer.support.ReadFileToHashSet;
-
-/**
- * Read the named stopword list from a file (one stopword per line)
- * @author Pedro Oliveira
- *
- */
-public class StopWordsFromFile implements StopWordList {
-
-	private HashSet<String> res;
-	
-	public StopWordsFromFile(String file)
+	public PTStemmerException(String message, Throwable cause)
 	{
-		res = ReadFileToHashSet.getInstance().fileToHash(file);
+		super(message,cause);
 	}
 	
-	//@Override
-	public boolean isStopWord(String word) {
-		return res.contains(word);
+	public PTStemmerException(String message)
+	{
+		super(message);
 	}
-
 }

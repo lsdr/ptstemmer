@@ -1,5 +1,5 @@
 /**
- * PTStemmer - Java Stemming toolkit for the Portuguese language (C) 2008 Pedro Oliveira
+ * PTStemmer - A Stemming toolkit for the Portuguese language (C) 2008-2010 Pedro Oliveira
  * 
  * This file is part of PTStemmer.
  * PTStemmer is free software: you can redistribute it and/or modify
@@ -21,23 +21,21 @@ package ptstemmer.support;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.HashSet;
+import java.util.Set;
 
-/**
- * Create a HashSet from a text file (one element per line)
- * @author Pedro Oliveira
- *
- */
-public class ReadFileToHashSet {
+import ptstemmer.exceptions.PTStemmerException;
 
-	private final static ReadFileToHashSet INSTANCE = new ReadFileToHashSet();
-
-	public static ReadFileToHashSet getInstance()
-	{
-		return INSTANCE;
-	}
-
-	public HashSet<String> fileToHash(String filename)
+public abstract class PTStemmerUtilities {
+	
+	/**
+	 * Parse text file (one word per line) to Set 
+	 * @param filename
+	 * @return
+	 * @throws PTStemmerException
+	 */
+	public static Set<String> fileToSet(String filename) throws PTStemmerException
 	{
 		HashSet<String> res = new HashSet<String>();
 		String aux;
@@ -47,8 +45,19 @@ public class ReadFileToHashSet {
 				res.add(aux.trim().toLowerCase());
 
 		} catch (IOException e) {
-			System.out.println("Problems opening file "+filename);
+			throw new PTStemmerException("Problems opening file "+filename, e);
 		}
 		return res;
+	}
+	
+	/**
+	 * Remove diacritics (i.e., accents) from String
+	 * @param st
+	 * @return
+	 */
+	public static String removeDiacritics(String st)
+	{
+		st = Normalizer.normalize(st, Normalizer.Form.NFD);
+		return st.replaceAll("[^\\p{ASCII}]","");
 	}
 }
