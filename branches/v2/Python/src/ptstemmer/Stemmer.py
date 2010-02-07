@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 '''
  * PTStemmer - A Stemming toolkit for the Portuguese language (C) 2008-2010 Pedro Oliveira
  * 
@@ -64,7 +65,7 @@ class Stemmer(object):
         '''
         self.__toIgnore.clear()
         
-    def getPhraseStem(self,phrase):
+    def getPhraseStems(self,phrase):
         '''
         Performs stemming on the phrase, using a simple space tokenizer
         '''

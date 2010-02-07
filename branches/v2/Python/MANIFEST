@@ -1,0 +1,15 @@
+setup.py
+src\ptstemmer\Example.py
+src\ptstemmer\Stemmer.py
+src\ptstemmer\__init__.py
+src\ptstemmer\exceptions\PTStemmerException.py
+src\ptstemmer\exceptions\__init__.py
+src\ptstemmer\implementations\OrengoStemmer.py
+src\ptstemmer\implementations\PorterStemmer.py
+src\ptstemmer\implementations\SavoyStemmer.py
+src\ptstemmer\implementations\__init__.py
+src\ptstemmer\support\PTStemmerUtilities.py
+src\ptstemmer\support\__init__.py
+src\ptstemmer\support\datastructures\LRUCache.py
+src\ptstemmer\support\datastructures\SuffixTree.py
+src\ptstemmer\support\datastructures\__init__.py
