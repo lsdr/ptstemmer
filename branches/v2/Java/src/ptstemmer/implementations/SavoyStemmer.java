@@ -18,7 +18,6 @@
  */
 package ptstemmer.implementations;
 
-import java.io.File;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -110,7 +109,7 @@ public class SavoyStemmer extends Stemmer {
 		Document document;
 		try {
 			builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			document = builder.parse(new File(SavoyStemmer.class.getResource("SavoyStemmerRules.xml").toURI()));
+			document = builder.parse(SavoyStemmer.class.getResourceAsStream("SavoyStemmerRules.xml"));
 		} catch (Exception e) {
 			throw new PTStemmerException("Problem while parsing Savoy's XML stemming rules file.", e);
 		}
