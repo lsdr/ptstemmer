@@ -120,7 +120,7 @@ public abstract class Stemmer {
 	 * @param phrase
 	 * @return
 	 */
-	public String[] getPhraseStem(String phrase)
+	public String[] getPhraseStems(String phrase)
 	{
 		String[] res = phrase.split(" ");
 		for(int i=0; i<res.length; i++)

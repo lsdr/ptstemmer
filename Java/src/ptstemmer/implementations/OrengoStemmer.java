@@ -18,7 +18,6 @@
  */
 package ptstemmer.implementations;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,6 +77,9 @@ public class OrengoStemmer extends Stemmer{
 	private String algorithm(String st)
 	{
 		String aux, stem = st;
+		if(st.length() <1)
+			return st;
+		
 		char end = stem.charAt(stem.length()-1);	
 		if(end == 's')
 			stem = applyRules(stem, pluralreductionrules);
@@ -131,7 +133,7 @@ public class OrengoStemmer extends Stemmer{
 		Document document;
 		try {
 			builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			document = builder.parse(new File(SavoyStemmer.class.getResource("OrengoStemmerRules.xml").toURI()));
+			document = builder.parse(SavoyStemmer.class.getResourceAsStream("OrengoStemmerRules.xml"));
 		} catch (Exception e) {
 			throw new PTStemmerException("Problem while parsing Orengo's XML stemming rules file.", e);
 		}

@@ -1,0 +1,2 @@
+Some Orengo stems are different from the C implementation:
+ - "relativamente" gives "relat" in C, "relativ" in Java. 
