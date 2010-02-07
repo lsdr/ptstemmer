@@ -1,0 +1,41 @@
+<Project name="PTStemmer_v2" fileversion="2.0" DefaultNamespace="ptstemmer" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
+  <Configurations active="Release">
+    <Configuration name="Debug" ctype="DotNetProjectConfiguration">
+      <Output directory="bin/Debug" assemblyKeyFile="." assembly="PTStemmer_v2" />
+      <Build debugmode="True" target="Library" />
+      <Execution runwithwarnings="True" consolepause="False" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" definesymbols="DEBUG" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Release" ctype="DotNetProjectConfiguration">
+      <Output directory="bin/Release" assemblyKeyFile="." assembly="PTStemmer_v2" />
+      <Build debugmode="False" target="Library" />
+      <Execution runwithwarnings="True" consolepause="False" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+  </Configurations>
+  <Contents>
+    <File name="AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
+    <File name="src" subtype="Directory" buildaction="Compile" />
+    <File name="src/ptstemmer" subtype="Directory" buildaction="Compile" />
+    <File name="src/ptstemmer/implementations/OrengoStemmer.cs" subtype="Code" buildaction="Compile" />
+    <File name="src/ptstemmer/implementations/PorterStemmer.cs" subtype="Code" buildaction="Compile" />
+    <File name="src/ptstemmer/implementations/SavoyStemmer.cs" subtype="Code" buildaction="Compile" />
+    <File name="src/ptstemmer/support/PTStemmerUtilities.cs" subtype="Code" buildaction="Compile" />
+    <File name="src/ptstemmer/Stemmer.cs" subtype="Code" buildaction="Compile" />
+    <File name="src/ptstemmer/exceptions" subtype="Directory" buildaction="Compile" />
+    <File name="src/ptstemmer/exceptions/PTStemmerException.cs" subtype="Code" buildaction="Compile" />
+    <File name="src/ptstemmer/support/datastructures" subtype="Directory" buildaction="Compile" />
+    <File name="src/ptstemmer/support/datastructures/Pair.cs" subtype="Code" buildaction="Compile" />
+    <File name="src/ptstemmer/support/datastructures/HashSet.cs" subtype="Code" buildaction="Compile" />
+    <File name="src/ptstemmer/support/datastructures/LRUCache.cs" subtype="Code" buildaction="Compile" />
+    <File name="src/ptstemmer/support/datastructures/SuffixTree.cs" subtype="Code" buildaction="Compile" />
+    <File name="src/ptstemmer/support/datastructures/SuffixTreeNode.cs" subtype="Code" buildaction="Compile" />
+    <File name="src/ptstemmer/Example.cs" subtype="Code" buildaction="Compile" />
+    <File name="src/ptstemmer/implementations/OrengoStemmerRules.xml" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="src/ptstemmer/implementations/SavoyStemmerRules.xml" subtype="Code" buildaction="EmbedAsResource" />
+  </Contents>
+  <References>
+    <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference type="Gac" localcopy="True" refto="System.Xml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  </References>
+</Project>
