@@ -86,6 +86,17 @@ class SuffixTree(object):
         '''
         res = self.getLongestSuffixesAndValues(word)
         return res.pop() if len(res) > 0 else None  #Python 2.5
+        '''
+        node = self.__root
+        res = None
+        for i,char in enumerate(word[::-1]):
+            try:
+                node = node[char]
+                if node.value != None:
+                    res = (word[len(word)-i-1:],node.value)
+            except:
+                break
+        return res'''
     
     def getLongestSuffixesAndValues(self,word):
         '''

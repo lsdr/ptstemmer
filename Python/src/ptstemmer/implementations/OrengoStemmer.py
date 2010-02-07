@@ -17,12 +17,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with PTStemmer. If not, see <http://www.gnu.org/licenses/>.
 '''
+import os
 
 from ptstemmer.Stemmer import Stemmer
-
 from xml.etree import ElementTree
 from ptstemmer.exceptions.PTStemmerException import PTStemmerException
 from ptstemmer.support.datastructures.SuffixTree import SuffixTree
+
 
 class OrengoStemmer(Stemmer):
     '''
@@ -93,7 +94,7 @@ class OrengoStemmer(Stemmer):
                 
     def __readRulesFromXML(self):
         try:
-            doc = ElementTree.parse('OrengoStemmerRules.xml')
+            doc = ElementTree.parse(os.path.join(os.path.dirname(os.path.abspath( __file__ )),'OrengoStemmerRules.xml'))
         except Exception, e:
             raise PTStemmerException,'Problem while parsing Orengo\'s XML stemming rules file ('+str(e)+')'
          
