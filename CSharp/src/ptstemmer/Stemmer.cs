@@ -129,7 +129,7 @@ namespace ptstemmer
 		/// <returns>
 		/// A <see cref="String"/>
 		/// </returns>
-		public String[] getPhraseStem(String phrase)
+		public String[] getPhraseStems(String phrase)
 		{
 			string[] res = phrase.Split(' ');
 			for(int i=0; i<res.Length; i++)
@@ -148,9 +148,6 @@ namespace ptstemmer
 		/// </returns>
 		public String getWordStem(String word)
 		{
-			string path = System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(System.Reflection.Assembly.GetExecutingAssembly().Location));
-			
-			Console.WriteLine(path+" - "+System.IO.Path.Combine(path,"abc.xml"));
 			String res;
 			word = word.Trim().ToLower();
 

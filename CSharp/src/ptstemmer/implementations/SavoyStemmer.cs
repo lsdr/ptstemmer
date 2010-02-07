@@ -90,8 +90,7 @@ namespace ptstemmer.implementations
 		{
 			XmlDocument doc = new XmlDocument();
 			try{
-				String path = Path.GetDirectoryName(Path.GetFullPath(System.Reflection.Assembly.GetExecutingAssembly().Location));				
-				doc.Load(Path.Combine(path,"SavoyStemmerRules.xml"));
+				doc.Load(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("SavoyStemmerRules.xml"));
 			}catch(Exception e) {
 				throw new PTStemmerException("Problem while parsing Savoy's XML stemming rules file.",e);}
 			

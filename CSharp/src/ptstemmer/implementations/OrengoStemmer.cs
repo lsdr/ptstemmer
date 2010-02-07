@@ -99,8 +99,7 @@ namespace ptstemmer.implementations
 		{
 			XmlDocument doc = new XmlDocument();
 			try{
-				String path = Path.GetDirectoryName(Path.GetFullPath(System.Reflection.Assembly.GetExecutingAssembly().Location));				
-				doc.Load(Path.Combine(path,"OrengoStemmerRules.xml"));
+				doc.Load(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("OrengoStemmerRules.xml"));
 			}catch(Exception e) {
 				throw new PTStemmerException("Problem while parsing Orengo's XML stemming rules file.",e);}
 			
