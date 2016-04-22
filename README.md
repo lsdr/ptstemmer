@@ -2,7 +2,7 @@
 
 ### Features
 
-* Python implementations of Orengo, Porter, and Savoy stemmers
+* Python implementations of [Orengo](http://www.webcitation.org/5NnvdIzOb), [Porter](http://snowball.tartarus.org/algorithms/porter/stemmer.html), and [Savoy](http://dl.acm.org/citation.cfm?doid=1141277.1141523) stemmers
 * Fast: can stem more than 1.5M words/second on a normal desktop
 * Least Recently Used (LRU) stem cache
 * Support for lists of words to ignore (useful for stopword and named entity removal)
